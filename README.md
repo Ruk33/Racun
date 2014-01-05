@@ -27,6 +27,7 @@ Note: you need nodeunit
 TODOS
 =====
 
+* Add support to detect automatically some elements (like returns, type of variable, etc)
 * Add support for override methods
 * Write tests
 * Refactor code

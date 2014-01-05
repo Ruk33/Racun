@@ -97,6 +97,10 @@ var racun = {
 				continue;
 			}
 			
+			if ( /package .*/.test(splitedSource[i]) ) {
+				continue;
+			}
+			
 			if ( /\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\//.test(splitedSource[i]) ) {
 				docs = /\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\//.exec(splitedSource[i]);
 				continue;
@@ -104,10 +108,6 @@ var racun = {
 				if ( actualClass && /function .*/.test(splitedSource[i]) && splitedSource[i].replace('\n', '').charAt(0) != '\t' ) {
 					actualClass = null;
 				}
-			}
-			
-			if ( /package .*/.test(splitedSource[i]) ) {
-				continue;
 			}
 			
 			// Check if we are in a class
@@ -128,15 +128,15 @@ var racun = {
 				tags = [];
 				tmpTags = docs.toString().match(/@\w+ .*/g);
 				description = trim(docs.toString().replace(/@(.*?) (.*)/g, '').replace(/\* /g, '').replace('/**', '').replace('*/', '').replace(/[\n\t]/g, ''));
-				visibility = /(public|protected)?/.exec(splitedSource[i]);
+				visibility = /(private|protected)?/.exec(splitedSource[i]);
 				isConstant = isConstant = /constant/.test(splitedSource[i]);
 				isStatic = /static/.test(splitedSource[i]);
 				isArray = /array/.test(splitedSource[i]);
 				
-				if ( visibility[1] ) {
+				if ( visibility && visibility[1] ) {
 					visibility = visibility[1];
 				} else {
-					visibility = 'private';
+					visibility = 'public';
 				}
 				
 				for ( var tag in tmpTags ) {
@@ -160,7 +160,7 @@ var racun = {
 					}
 				} else {
 					if ( /(?:abstract )?function .*/.test(splitedSource[i]) ) {
-						name = /(?:abstract )?function (.*?)\(\)/.exec(splitedSource[i])[1];
+						name = /(?:abstract )?function (.*?)\(/.exec(splitedSource[i])[1];
 						
 						if ( actualClass ) {
 							this.docs[package]['classes'][actualClass]['methods'][name] = [];

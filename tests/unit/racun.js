@@ -12,11 +12,13 @@ module.exports = {
     },
 	
 	detectingClasses: function(test) {
+		// to do
+		
 		var docs = [];
 		
-		docs['classes'] = racun.getClassesFromPackage('Example');
-		docs['functions'] = racun.getFunctionsFromPackage('Example');
-		docs['globals'] = racun.getGlobalsFromPackage('Example');
+		docs['classes'] = racun.getClassesFromPackage('AI');
+		docs['functions'] = racun.getFunctionsFromPackage('AI');
+		docs['globals'] = racun.getGlobalsFromPackage('AI');
 		
 		console.log('\nClasses');
 		
