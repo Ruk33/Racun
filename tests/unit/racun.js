@@ -15,7 +15,7 @@ module.exports = {
 		var classes = racun.getClassesFromPackage('Example');
 
 		for ( var i in classes ) {
-			console.log('properties', classes[i]['properties']);
+			console.log(i, [classes[i]['properties']]);
 		}
 
 		test.done();

@@ -1,5 +1,10 @@
 package Example
 
+/**
+ * Solo una variable global
+ */
+int globalVariable = 1
+
 class Example
 	/**
 	 * Descripcion de la propiedad
@@ -7,7 +12,7 @@ class Example
 	 * @property caster
 	 * @type unit
 	 */
-	unit caster
+	unit caster = null
 
 	/**
 	 * Descripcion de la propiedad 2
@@ -20,7 +25,7 @@ class Example
 	 * Hola
 	 * @return boolean
 	 */
-	function onCast()
+	public function onCast()
 		return false
 
 	/**
@@ -37,5 +42,25 @@ class Example
 	function testInMethod()
 		return true
 
+/**
+ * Doc para test
+ */
 function test()
+	BJDebugMsg("hola!")
+
+/**
+ * comentario
+ */
+int GLOBAL_OTRA = 4
+
+/**
+ * Doc para testDOS
+ */
+function testDOS()
+	BJDebugMsg("hola!")
+
+/**
+ * Doc para testTRES
+ */
+function testTRES()
 	BJDebugMsg("hola!")

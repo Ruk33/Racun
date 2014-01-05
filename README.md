@@ -1,7 +1,7 @@
 Racun
 =====
 
-Racun is a NodeJS application that generates API documentation from comments in source.
+Racun is a NodeJS application that generates API documentation from comments in source of wurst files.
 
 How to install?
 ===============
@@ -25,7 +25,6 @@ Note: you need nodeunit
 TODOS
 =====
 
-* Support for globals
 * Write tests
 * Refactor code
 * HTML pages
