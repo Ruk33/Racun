@@ -3,7 +3,7 @@ package Example
 /**
  * Solo una variable global
  */
-int globalVariable = 1
+int array globalVariable = 1
 
 public abstract class Example
 	/**

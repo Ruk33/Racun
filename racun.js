@@ -85,6 +85,7 @@ var racun = {
 		var isPrivate;
 		var isConstant;
 		var isStatic;
+		var isArray;
 		
 		this.docs[package] = [];
 		this.docs[package]['globals'] = [];
@@ -130,6 +131,7 @@ var racun = {
 				isPrivate = ! /public/.test(splitedSource[i]);
 				isConstant = isConstant = /constant/.test(splitedSource[i]);
 				isStatic = /static/.test(splitedSource[i]);
+				isArray = /array/.test(splitedSource[i]);
 				
 				for ( var tag in tmpTags ) {
 					tmpTags[tag] = tmpTags[tag].split(' ');
@@ -145,6 +147,7 @@ var racun = {
 					this.docs[package]['globals'][name]['tags'] = tags;
 					this.docs[package]['globals'][name]['private'] = isPrivate;
 					this.docs[package]['globals'][name]['constant'] = isConstant;
+					this.docs[package]['globals'][name]['array'] = isArray;
 					
 					if ( /(?: *= *)(.*)/.test(splitedSource[i]) ) {
 						this.docs[package]['globals'][name]['default'] = /(?: *= *)(.*)/.exec(splitedSource[i])[1];
@@ -174,6 +177,7 @@ var racun = {
 						this.docs[package]['classes'][actualClass]['properties'][name]['private'] = isPrivate;
 						this.docs[package]['classes'][actualClass]['properties'][name]['static'] = isStatic;
 						this.docs[package]['classes'][actualClass]['properties'][name]['constant'] = isConstant && isStatic;
+						this.docs[package]['classes'][actualClass]['properties'][name]['array'] = isArray;
 						
 						if ( /(?: *= *)(.*)/.test(splitedSource[i]) ) {
 							this.docs[package]['classes'][actualClass]['properties'][name]['default'] = /(?: *= *)(.*)/.exec(splitedSource[i])[1];
