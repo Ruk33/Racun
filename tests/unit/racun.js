@@ -1,12 +1,23 @@
-exports.testSomething = function(test){
-    test.equals(1, 1, "this should be one");
-    test.ok(true, "this assertion should pass");
-    test.done();
-};
-
 var racun = require('../../racun');
+var async = require('async');
+var args = process.argv;
 
-exports.detectingClasses = function(test) {
-	console.log(racun.init);
-	test.done();
+args.push('--paths example');
+args.push('--debug');
+
+module.exports = {
+	setUp: function (callback) {
+        racun.init(args);
+		callback();
+    },
+	
+	detectingClasses: function(test) {
+		var classes = racun.getClassesFromPackage('Example');
+
+		for ( var i in classes ) {
+			console.log('properties', classes[i]['properties']);
+		}
+
+		test.done();
+	}
 };

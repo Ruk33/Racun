@@ -3,17 +3,18 @@ package Example
 class Example
 	/**
 	 * Descripcion de la propiedad
+	 * en dos lineas
 	 * @property caster
 	 * @type unit
 	 */
-	private unit caster
+	unit caster
 
 	/**
 	 * Descripcion de la propiedad 2
 	 * @property target
 	 * @type unit
 	 */
-	private unit target
+	public unit target
 	
 	/**
 	 * Hola

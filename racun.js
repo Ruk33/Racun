@@ -4,8 +4,6 @@
 var fs = require('fs');
 var async = require('async');
 
-var args = process.argv.slice(2);
-
 function trim(s) {
 	return s.replace(/^\s+|\s+$/g, '');
 }
@@ -15,6 +13,8 @@ var racun = {
 		paths: [],
 		fileExtension: 'wurst'
 	},
+			
+	args: [],
 			
 	regexpr: {
 		
@@ -38,13 +38,25 @@ var racun = {
 	 */
 	docs: [],
 	
+	getPackage: function(package) {
+		return this.docs[package];
+	},
+	
+	getClassesFromPackage: function(package) {
+		return this.docs[package]['classes'];
+	},
+			
+	getFunctionsFromPackage: function(package) {
+		return this.docs[package]['functions'];
+	},
+	
 	setPaths: function() {
 		var paths,
 			index;
 		
-		for ( index in args ) {
-			if ( args[index].search('--paths') !== -1 ) {
-				paths = args[index].split(' ');
+		for ( index in this.args ) {
+			if ( this.args[index].search('--paths') !== -1 ) {
+				paths = this.args[index].split(' ');
 				this.conf.paths = paths[1].split(',');
 				
 				break;
@@ -62,12 +74,14 @@ var racun = {
 		var splitedSource = source.replace(/\r/g, '').split(/([\t\s]*(class|function) .*|\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\/)/);
 		var actualClass = null;
 		var docs = null;
-		var property;
+		var name;
+		var description;
+		var tmpTags;
 		var tags;
-		var method;
 		
 		this.docs[package] = [];
 		this.docs[package]['classes'] = [];
+		this.docs[package]['functions'] = [];
 		
 		for ( var i = 0, max = splitedSource.length; i < max; i++ ) {
 			if ( ! splitedSource[i] || ! trim(splitedSource[i].replace(/[\t\n\r]/g, '')) ) {
@@ -79,7 +93,7 @@ var racun = {
 			}
 			
 			// Check if we are in a class
-			if ( /class .*/.test(splitedSource[i]) ) {
+			if ( ! actualClass && /class .*/.test(splitedSource[i]) ) {
 				actualClass = splitedSource[i].split(' ')[1];
 				
 				this.docs[package]['classes'][actualClass] = [];
@@ -90,18 +104,39 @@ var racun = {
 			}
 			
 			if ( docs ) {
-				console.log(docs);
-				console.log(splitedSource[i]);
-				if ( /function .*/.test(splitedSource[i]) ) {
-					if ( actualClass ) {
-						//console.log('method');
-					} else {
-						//console.log('function');
-					}
-				} else {
-					//console.log('property');
+				tags = [];
+				tmpTags = docs.toString().match(/@\w+ .*/g);
+				description = trim(docs.toString().replace(/@(.*?) (.*)/g, '').replace(/\* /g, '').replace('/**', '').replace('*/', '').replace(/[\n\t]/g, ''));
+				
+				for ( var tag in tmpTags ) {
+					tmpTags[tag] = tmpTags[tag].split(' ');
+					tags[tmpTags[tag][0]] = tmpTags[tag][1];
 				}
 				
+				if ( /function .*/.test(splitedSource[i]) ) {
+					name = /function (.*?)\(\)/.exec(splitedSource[i])[1];
+					
+					if ( actualClass ) {
+						this.docs[package]['classes'][actualClass]['methods'][name] = [];
+						this.docs[package]['classes'][actualClass]['methods'][name]['description'] = description;
+						this.docs[package]['classes'][actualClass]['methods'][name]['tags'] = tags;
+					} else {
+						this.docs[package]['functions'][name] = [];
+						this.docs[package]['functions'][name]['description'] = description;
+						this.docs[package]['functions'][name]['tags'] = tags;
+					}
+				} else {
+					name = /(?:public )?\b\w+\b \b(\w+)\b/.exec(splitedSource[i].replace(/[\t\n]/g, ''))[1];
+					
+					this.docs[package]['classes'][actualClass]['properties'][name] = [];
+					this.docs[package]['classes'][actualClass]['properties'][name]['description'] = description;
+					this.docs[package]['classes'][actualClass]['properties'][name]['tags'] = tags;
+				}
+				
+				name = null;
+				description = null;
+				tmpTags = null
+				tags = null;
 				docs = null;
 			}
 			
@@ -109,43 +144,33 @@ var racun = {
 				docs = /\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\//.exec(splitedSource[i]);
 			} else {
 				if ( actualClass && /function .*/.test(splitedSource[i]) && splitedSource[i].replace('\n', '').charAt(0) != '\t' ) {
-					console.log('salimos de class', splitedSource[i]);
 					actualClass = null;
 				}
 			}
 		}
+		
+		console.log('Package ' + package + ' documented!');
 	},
 	
 	start: function() {
-		for ( var path in this.conf.paths ) {
-			fs.readdir(this.conf.paths[path], function(error, list) {
-				if ( error ) {
-					console.error('There was an error', error);
-				}
-				
-				list.forEach(function(file) {
-					fs.readFile(racun.conf.paths[path] + '/' + file, 'utf8', function(error, source) {
-						if ( error ) {
-							console.error('There was an error reading the file', error);
-						}
-						
-						racun.writeDocumentation(source);
-					});
-				});
-			});
+		var files;
+
+		for ( var i in this.conf.paths ) {
+			files = fs.readdirSync(this.conf.paths[i]);
+			
+			for ( var x in files ) {
+				racun.writeDocumentation(fs.readFileSync(this.conf.paths[i] + '/' + files[x], 'utf8'));
+			}
 		}
 	},
 	
-	init: function() {
+	init: function(args) {
 		console.log('Documenting with Racun');
 		
+		this.args = args;
 		this.setPaths();
 		this.start();
 	}
 };
-
-/*args.push('--paths example');
-args.push('--debug');
-racun.init();*/
 
 module.exports = racun;
