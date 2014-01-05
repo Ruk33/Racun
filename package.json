@@ -1,0 +1,21 @@
+{
+	"name": "racun",
+	"description": "Document generator for wurst proyects.",
+	"version": "0.0.1",
+	"main": "./racun.js",
+	"author": {
+		"name": "Ruke",
+		"email": "area51ruke@gmail.com"
+	},
+	"keywords": [],
+	"licenses": {
+		"type": "none"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Ruk33/racun.git"
+	},
+	"bugs": {
+		"url": "http://github.com/Ruk33/racun/issues"
+	}
+}

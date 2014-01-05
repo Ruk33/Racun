@@ -1,0 +1,40 @@
+package Example
+
+class Example
+	/**
+	 * Descripcion de la propiedad
+	 * @property caster
+	 * @type unit
+	 */
+	private unit caster
+
+	/**
+	 * Descripcion de la propiedad 2
+	 * @property target
+	 * @type unit
+	 */
+	private unit target
+	
+	/**
+	 * Hola
+	 * @return boolean
+	 */
+	function onCast()
+		return false
+
+	/**
+	 * Descripcion de funcion test
+	 * @return boolean
+	 */
+	function testInMethod()
+		return true
+
+	/**
+	 * Descripcion de funcion test
+	 * @return boolean
+	 */
+	function testInMethod()
+		return true
+
+function test()
+	BJDebugMsg("hola!")
