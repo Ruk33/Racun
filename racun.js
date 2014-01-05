@@ -162,6 +162,7 @@ var racun = {
 							this.docs[package]['classes'][actualClass]['methods'][name]['tags'] = tags;
 							this.docs[package]['classes'][actualClass]['methods'][name]['private'] = isPrivate;
 							this.docs[package]['classes'][actualClass]['methods'][name]['static'] = isStatic;
+							this.docs[package]['classes'][actualClass]['methods'][name]['abstract'] = /abstract/.test(splitedSource[i]);
 						} else {
 							this.docs[package]['functions'][name] = [];
 							this.docs[package]['functions'][name]['description'] = description;
