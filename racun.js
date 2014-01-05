@@ -38,6 +38,10 @@ var racun = {
 	 */
 	docs: [],
 	
+	getPackages: function() {
+		return this.docs;
+	},
+	
 	getPackage: function(package) {
 		return this.docs[package];
 	},
