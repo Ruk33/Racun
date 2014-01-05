@@ -1,3 +1,5 @@
+![](http://i.imgur.com/LiS4nP2.png)
+
 Racun
 =====
 
