@@ -116,6 +116,7 @@ var racun = {
 				this.docs[package]['classes'][actualClass] = [];
 				this.docs[package]['classes'][actualClass]['name'] = actualClass;
 				this.docs[package]['classes'][actualClass]['abstract'] = /abstract/.test(splitedSource[i]);
+				this.docs[package]['classes'][actualClass]['private'] = ! /public/.test(splitedSource[i]);
 				this.docs[package]['classes'][actualClass]['properties'] = [];
 				this.docs[package]['classes'][actualClass]['methods'] = [];
 				

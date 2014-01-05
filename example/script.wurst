@@ -5,7 +5,7 @@ package Example
  */
 int globalVariable = 1
 
-abstract class Example
+public abstract class Example
 	/**
 	 * Descripcion de la propiedad
 	 * en dos lineas
