@@ -1,4 +1,4 @@
-![](http://i.imgur.com/LiS4nP2.png)
+<center>![](http://i.imgur.com/LiS4nP2.png)</center>
 
 Racun
 =====
