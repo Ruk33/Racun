@@ -82,7 +82,7 @@ var racun = {
 		var description;
 		var tmpTags;
 		var tags;
-		var isPrivate;
+		var visibility;
 		var isConstant;
 		var isStatic;
 		var isArray;
@@ -128,10 +128,16 @@ var racun = {
 				tags = [];
 				tmpTags = docs.toString().match(/@\w+ .*/g);
 				description = trim(docs.toString().replace(/@(.*?) (.*)/g, '').replace(/\* /g, '').replace('/**', '').replace('*/', '').replace(/[\n\t]/g, ''));
-				isPrivate = ! /public/.test(splitedSource[i]);
+				visibility = /(public|protected)?/.exec(splitedSource[i]);
 				isConstant = isConstant = /constant/.test(splitedSource[i]);
 				isStatic = /static/.test(splitedSource[i]);
 				isArray = /array/.test(splitedSource[i]);
+				
+				if ( visibility[1] ) {
+					visibility = visibility[1];
+				} else {
+					visibility = 'private';
+				}
 				
 				for ( var tag in tmpTags ) {
 					tmpTags[tag] = tmpTags[tag].split(' ');
@@ -145,7 +151,7 @@ var racun = {
 					this.docs[package]['globals'][name] = [];
 					this.docs[package]['globals'][name]['description'] = description;
 					this.docs[package]['globals'][name]['tags'] = tags;
-					this.docs[package]['globals'][name]['private'] = isPrivate;
+					this.docs[package]['globals'][name]['visibility'] = visibility;
 					this.docs[package]['globals'][name]['constant'] = isConstant;
 					this.docs[package]['globals'][name]['array'] = isArray;
 					
@@ -160,14 +166,14 @@ var racun = {
 							this.docs[package]['classes'][actualClass]['methods'][name] = [];
 							this.docs[package]['classes'][actualClass]['methods'][name]['description'] = description;
 							this.docs[package]['classes'][actualClass]['methods'][name]['tags'] = tags;
-							this.docs[package]['classes'][actualClass]['methods'][name]['private'] = isPrivate;
+							this.docs[package]['classes'][actualClass]['methods'][name]['visibility'] = visibility;
 							this.docs[package]['classes'][actualClass]['methods'][name]['static'] = isStatic;
 							this.docs[package]['classes'][actualClass]['methods'][name]['abstract'] = /abstract/.test(splitedSource[i]);
 						} else {
 							this.docs[package]['functions'][name] = [];
 							this.docs[package]['functions'][name]['description'] = description;
 							this.docs[package]['functions'][name]['tags'] = tags;
-							this.docs[package]['functions'][name]['private'] = isPrivate;
+							this.docs[package]['functions'][name]['visibility'] = visibility;
 						}
 					} else {
 						name = /(?:public )?(?:constant )?\b.+\b \b(\w+)\b/.exec(splitedSource[i].replace(/[\t\n]/g, ''))[1];
@@ -175,7 +181,7 @@ var racun = {
 						this.docs[package]['classes'][actualClass]['properties'][name] = [];
 						this.docs[package]['classes'][actualClass]['properties'][name]['description'] = description;
 						this.docs[package]['classes'][actualClass]['properties'][name]['tags'] = tags;
-						this.docs[package]['classes'][actualClass]['properties'][name]['private'] = isPrivate;
+						this.docs[package]['classes'][actualClass]['properties'][name]['visibility'] = visibility;
 						this.docs[package]['classes'][actualClass]['properties'][name]['static'] = isStatic;
 						this.docs[package]['classes'][actualClass]['properties'][name]['constant'] = isConstant && isStatic;
 						this.docs[package]['classes'][actualClass]['properties'][name]['array'] = isArray;

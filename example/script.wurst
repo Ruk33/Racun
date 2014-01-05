@@ -19,7 +19,7 @@ public abstract class Example
 	 * @property target
 	 * @type unit
 	 */
-	public unit target
+	protected unit target
 
 	/**
 	 * Funcion que se ejecuta cuando el objeto cambia

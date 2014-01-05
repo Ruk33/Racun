@@ -1,4 +1,4 @@
-<center>![](http://i.imgur.com/LiS4nP2.png)</center>
+![](http://i.imgur.com/LiS4nP2.png)
 
 Racun
 =====
@@ -28,7 +28,6 @@ TODOS
 =====
 
 * Add support for override methods
-* Add support for protected
 * Write tests
 * Refactor code
 * HTML pages
