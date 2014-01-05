@@ -75,7 +75,7 @@ var racun = {
 	writeDocumentation: function(source) {
 		var packageLine = /package (.*?)(?=\n|\r)/.exec(source);
 		var package = packageLine[1];
-		var splitedSource = source.replace(/\r/g, '').split(/((public )?class .*|[\t\s]*(public )?function .*|\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\/|(?!\t).+)/);
+		var splitedSource = source.replace(/\r/g, '').split(/((public )?class .*|[\t\s]*(public )?(abstract )?function .*|\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\/|(?!\t).+)/);
 		var actualClass = null;
 		var docs = null;
 		var name;
@@ -153,9 +153,9 @@ var racun = {
 						this.docs[package]['globals'][name]['default'] = /(?: *= *)(.*)/.exec(splitedSource[i])[1];
 					}
 				} else {
-					if ( /function .*/.test(splitedSource[i]) ) {
-						name = /function (.*?)\(\)/.exec(splitedSource[i])[1];
-
+					if ( /(?:abstract )?function .*/.test(splitedSource[i]) ) {
+						name = /(?:abstract )?function (.*?)\(\)/.exec(splitedSource[i])[1];
+						
 						if ( actualClass ) {
 							this.docs[package]['classes'][actualClass]['methods'][name] = [];
 							this.docs[package]['classes'][actualClass]['methods'][name]['description'] = description;

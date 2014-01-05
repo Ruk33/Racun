@@ -25,8 +25,8 @@ Note: you need nodeunit
 TODOS
 =====
 
+* Add support for override methods
 * Add support for protected
-* Add support for abstract methods
 * Write tests
 * Refactor code
 * HTML pages
