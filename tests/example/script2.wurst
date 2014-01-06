@@ -10,7 +10,7 @@ public abstract class AI
 	/**
 	 * Unidad que hace de boss
 	 */
-	protected unit boss
+	protected unit boss = null
 	
 	/**
 	 * Objetivo del boss

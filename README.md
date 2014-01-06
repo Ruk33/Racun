@@ -15,7 +15,10 @@ Note: you need NodeJS and GIT.
 How to use it?
 ==============
 
-	todo
+Note: You can include several paths by separating them by a coma (,).
+Note: You can pass directly a single file.
+
+	node folder/to/racun/racun.js --paths path/to/folder/with/wurst/scripts[,second/path,path/to/file.wurst]
 
 How to run tests?
 =================
@@ -29,8 +32,7 @@ TODOS
 
 * Add support to detect automatically some elements (like returns, type of variable, etc)
 * Add support for override methods
-* Write tests
 * Refactor code
 * HTML pages
 * CSS default styles
-* Write init code to run Racun from command line
+* Help message
