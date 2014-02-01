@@ -1,8 +1,8 @@
 var racun = require('../../src/racun');
 var args = process.argv;
 
-args.push('--paths ' + __dirname + '/../example');
-args.push('--debug');
+args.push('--paths')
+args.push(__dirname + '/../example');
 
 racun.init(args);
 
