@@ -1,8 +1,18 @@
 var Racun = require('./src/racun');
 var args = process.argv;
 var fs = require('fs');
-var pageGenerator = require('./src/pageGenerator');
+var jsonGenerator = require('./src/jsonGenerator');
 var racunInstance = new Racun();
+
+function getDestinationPath(args) {
+	var destinationPathIndex = args.indexOf('--destinationPath');
+	
+	if ( destinationPathIndex !== -1 && args[destinationPathIndex + 1] ) {
+		return args[destinationPathIndex + 1];
+	}
+	
+	return false;
+}
 
 function getPaths(args) {
 	var paths = [];
@@ -34,6 +44,7 @@ function getSourcesFromPath(path) {
 
 function main(args) {
 	var paths;
+	var destinationPath;
 	var sources;
 	
 	console.log('\n');
@@ -42,29 +53,36 @@ function main(args) {
 	console.log('==========================================');
 	
 	if ( args.length <= 2 ) {
-		console.log("Help: to-do, sorry <.<");
+		console.log("--path path/one[,path/two] Path to the wurst files");
+		console.log("--destinationPath path/one Path for the generated documentation");
 	} else {
 		paths = getPaths(args);
+		destinationPath = getDestinationPath(args);
 		
 		if ( paths.length === 0 ) {
 			console.log('Error: You have to provide some path.');
 			console.log('Tip: You can include several paths separating them by a , (coma)');
-			console.log('Example: path/one,path/two/,path/to/three');
-		} else {
-			for ( var i in paths ) {
-				sources = getSourcesFromPath(paths[i]);
-				
-				for ( var n in sources ) {
-					racunInstance.generateDocumentationFor(sources[n]);
-				}
-			}
+			console.log('Example: --paths path/one,path/two/,path/to/three');
 			
-			if ( fs.readdirSync('c:/doc').length > 0 ) {
-				console.log('Error: You must specify an empty directory to the generated pages');
-			} else {
-				pageGenerator(racunInstance, 'templates/default', 'c:/doc');
+			return;
+		}
+		
+		if ( ! destinationPath ) {
+			console.log('Error: You must provide a destination path for the generated documentation');
+			console.log('Example: --destinationPath c:/doc');
+			
+			return;
+		}
+		
+		for ( var i in paths ) {
+			sources = getSourcesFromPath(paths[i]);
+
+			for ( var n in sources ) {
+				racunInstance.generateDocumentationFor(sources[n]);
 			}
 		}
+		
+		jsonGenerator(racunInstance, destinationPath);
 	}
 }
 

@@ -4,6 +4,7 @@ Racun
 =====
 
 Racun is a NodeJS application that generates API documentation from comments in source of wurst files.
+The generated documentation is in JSON, so it is easy to work with.
 
 How to install?
 ===============
@@ -18,7 +19,7 @@ How to use it?
 Note: You can include several paths by separating them by a coma (,).
 Note: You can pass directly a single file.
 
-	node folder/to/racun.js --paths path/to/folder/with/wurst/scripts[,second/path,path/to/file.wurst]
+	node folder/to/racun.js --paths path/to/folder/with/wurst/scripts[,second/path,path/to/file.wurst] --destinationPath path/for/the/generated/documentation
 
 How to run tests?
 =================
@@ -32,6 +33,3 @@ TODOS
 
 * Add support to detect automatically some elements (like returns, type of variable, etc)
 * Add support for override methods
-* HTML pages
-* CSS default styles
-* Help message
