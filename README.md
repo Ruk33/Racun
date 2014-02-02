@@ -18,7 +18,7 @@ How to use it?
 Note: You can include several paths by separating them by a coma (,).
 Note: You can pass directly a single file.
 
-	node folder/to/racun/racun.js --paths path/to/folder/with/wurst/scripts[,second/path,path/to/file.wurst]
+	node folder/to/racun.js --paths path/to/folder/with/wurst/scripts[,second/path,path/to/file.wurst]
 
 How to run tests?
 =================
@@ -32,7 +32,6 @@ TODOS
 
 * Add support to detect automatically some elements (like returns, type of variable, etc)
 * Add support for override methods
-* Refactor code
 * HTML pages
 * CSS default styles
 * Help message

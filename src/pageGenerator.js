@@ -27,6 +27,7 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 	var functions;
 	var globals;
 	
+	// thanks for being so magical *3*
 	ncp(templatesFolder + '/css', destinationPath + '/css');
 	ncp(templatesFolder + '/fonts', destinationPath + '/fonts');
 	ncp(templatesFolder + '/img', destinationPath + '/img');
