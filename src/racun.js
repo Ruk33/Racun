@@ -10,11 +10,11 @@ var Racun = function() {
 	var docs = [];
 	
 	var regexpr = {
-		package: /package (.*?)(?=\n|\r)/,
+		package: /package ([a-zA-Z0-9]*?)(?=\n|\r)/,
 		spliter: /((public )?class .*|[\t\s]*(public )?(abstract )?function .*|\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\/|(?!\t).+)/,
 		docBlock: /\/\*\*[^*]*\*+(?:[^*/][^*]*\*+)*\//,
-		function: /(?:abstract )?function (.*?)\(/,
-		class: /(?:abstract )?(?:class )(\w+)/,
+		function: /(?:abstract )?function ([a-zA-Z0-9]*?)\(/,
+		class: /(?:abstract )?(?:class )([a-zA-Z0-9]+)/,
 		abstract: /abstract/,
 		public: /public/,
 		visibility: /(private|protected)?/,
@@ -24,7 +24,8 @@ var Racun = function() {
 		docTags: /@(.*?) (.*)/g,
 		globals: /(?:public )?(?:constant )?\b.+\b \b(\w+)\b/,
 		defaultValue: /(?: *= *)(.*)/,
-		property: /(?:public )?(?:constant )?\b.+\b \b(\w+)\b/
+		property: /(?:public )?(?:constant )?\b.+\b \b(\w+)\b/,
+		construct: /construct/
 	};
 	
 	/**
@@ -225,8 +226,14 @@ var Racun = function() {
 			return;
 		}
 		
+		var package = regexpr.package.exec(code);
+		
+		if ( ! package || ! package[1] ) {
+			return;
+		}
+		
 		var packageDocumentation = {
-			name: regexpr.package.exec(code)[1],
+			name: trim(package[1]),
 			code: code,
 			globals: [],
 			classes: [],
@@ -237,8 +244,13 @@ var Racun = function() {
 		var docBlock;
 		var actualClass = null;
 		
-		for ( var i = 0, max = splitedCode.length; i < max; i++ ) {
+		for ( var i = 0, max = splitedCode.length; i < max; i++ ) {			
 			if ( ! splitedCode[i] || ! trim(splitedCode[i].replace(/[\t\n\r]/g, '')) ) {
+				continue;
+			}
+			
+			// I know, this is weird
+			if ( splitedCode[i] == 'public ' ) {
 				continue;
 			}
 			
@@ -294,8 +306,12 @@ var Racun = function() {
 					docBlock.name = regexpr.globals.exec(splitedCode[i].replace(/[\t\n]/g, ''))[1];
 					packageDocumentation.globals.push(docBlock);
 				} else {
-					if ( regexpr.function.test(splitedCode[i]) ) {
-						docBlock.name = regexpr.function.exec(splitedCode[i])[1];
+					if ( regexpr.function.test(splitedCode[i]) || regexpr.construct.test(splitedCode[i]) ) {
+						if ( regexpr.construct.test(splitedCode[i]) ) {
+							docBlock.name = 'construct';
+						} else {
+							docBlock.name = regexpr.function.exec(splitedCode[i])[1];
+						}
 						
 						if ( actualClass !== null ) {
 							docBlock.static = regexpr.static.test(splitedCode[i]);
@@ -306,10 +322,12 @@ var Racun = function() {
 							packageDocumentation.functions.push(docBlock);
 						}
 					} else {
-						docBlock.name = regexpr.property.exec(splitedCode[i].replace(/[\t\n]/g, ''))[1];
-						docBlock.static = regexpr.static.test(splitedCode[i]);
-						
-						packageDocumentation.classes[actualClass].properties.push(docBlock);
+						if ( actualClass !== null ) {
+							docBlock.name = regexpr.property.exec(splitedCode[i].replace(/[\t\n]/g, ''))[1];
+							docBlock.static = regexpr.static.test(splitedCode[i]);
+
+							packageDocumentation.classes[actualClass].properties.push(docBlock);
+						}
 					}
 				}
 				

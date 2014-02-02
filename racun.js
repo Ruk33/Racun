@@ -27,16 +27,27 @@ function getPaths(args) {
 
 function getSourcesFromPath(path) {
 	var sources = [];
+	var folders;
 	var files;
 	
 	if ( fs.lstatSync(path).isFile() ) {
-		sources.push(fs.readFileSync(path, 'utf8'));
-	} else if ( fs.lstatSync(path).isDirectory() ) {
-		files = fs.readdirSync(path);
-		
-		for ( var i in files ) {
-			sources.push(fs.readFileSync(path + '/' + files[i], 'utf8'));
+		if ( path.lastIndexOf('.wurst') !== -1 ) {
+			sources.push(fs.readFileSync(path, 'utf8'));
 		}
+	} else if ( fs.lstatSync(path).isDirectory() ) {
+		folders = fs.readdirSync(path);
+		
+		for ( var i in folders ) {
+			files = getSourcesFromPath(path + '/' + folders[i]);
+			for ( var n in files ) {
+				sources.push(files[n]);
+			}
+		}
+		
+		//for ( var i in folders ) {
+			//sources.push(getSourcesFromPath(path + '/' + folders[i]));
+			//sources.push(fs.readFileSync(path + '/' + folders[i], 'utf8'));
+		//}
 	}
 	
 	return sources;
@@ -82,7 +93,7 @@ function main(args) {
 			}
 		}
 		
-		jsonGenerator(racunInstance, destinationPath);
+		//jsonGenerator(racunInstance, destinationPath);
 	}
 }
 
