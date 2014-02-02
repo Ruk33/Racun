@@ -59,19 +59,31 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 		generateFile(
 			templatesFolder + '/package/package-name/classes.html', 
 			destinationPath + '/package/' + packages[p].name + '/classes.html', 
-			{ docs: racunInstance, classes: classes }
+			{
+				docs: racunInstance,
+				package: packages[p],
+				classes: classes
+			}
 		);
 
 		generateFile(
 			templatesFolder + '/package/package-name/functions.html', 
 			destinationPath + '/package/' + packages[p].name + '/functions.html', 
-			{ docs: racunInstance, functions: functions }
+			{ 
+				docs: racunInstance,
+				package: packages[p],
+				functions: functions
+			}
 		);
 
 		generateFile(
 			templatesFolder + '/package/package-name/globals.html', 
 			destinationPath + '/package/' + packages[p].name + '/globals.html', 
-			{ docs: racunInstance, globals: globals }
+			{ 
+				docs: racunInstance,
+				package: packages[p],
+				globals: globals 
+			}
 		);
 
 		for ( var c in classes ) {
@@ -86,7 +98,12 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 				generateFile(
 					templatesFolder + '/package/package-name/class/method/method-name.html', 
 					destinationPath + '/package/' + packages[p].name + '/class/' + classes[c].name + '/method/' + methods[m].name + '.html', 
-					{ docs: racunInstance, method: methods[m] }
+					{ 
+						docs: racunInstance, 
+						package: packages[p],
+						class: classes[c],
+						method: methods[m] 
+					}
 				);
 			}
 
@@ -94,7 +111,12 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 				generateFile(
 					templatesFolder + '/package/package-name/class/property/property-name.html', 
 					destinationPath + '/package/' + packages[p].name + '/class/' + classes[c].name + '/property/' + properties[pr].name + '.html', 
-					{ docs: racunInstance, property: properties[pr] }
+					{
+						docs: racunInstance,
+						package: packages[p],
+						class: classes[c],
+						property: properties[pr]
+					}
 				);
 			}
 		}
@@ -103,7 +125,11 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 			generateFile(
 				templatesFolder + '/package/package-name/function/function-name.html', 
 				destinationPath + '/package/' + packages[p].name + '/function/' + functions[f].name + '.html', 
-				{ docs: racunInstance, function: functions[f] }
+				{
+					docs: racunInstance,
+					package: packages[p],
+					function: functions[f]
+				}
 			);
 		}
 
@@ -111,7 +137,11 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 			generateFile(
 				templatesFolder + '/package/package-name/global/global-name.html', 
 				destinationPath + '/package/' + packages[p].name + '/global/' + globals[g].name + '.html', 
-				{ docs: racunInstance, global: globals[pr] }
+				{
+					docs: racunInstance, 
+					package: packages[p],
+					global: globals[pr]
+				}
 			);
 		}
 	}
