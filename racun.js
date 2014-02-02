@@ -93,7 +93,10 @@ function main(args) {
 			}
 		}
 		
+		console.log("Generating JSON files...");
 		jsonGenerator(racunInstance, destinationPath);
+		
+		console.log("Done!");
 	}
 }
 
