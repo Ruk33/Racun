@@ -1,0 +1,11 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+<ul>
+	{% for package in docs.getPackages() %}
+	<li><a href="./package/{{ package.name }}.html">package.name</a></li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

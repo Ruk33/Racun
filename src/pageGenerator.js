@@ -27,6 +27,8 @@ var pageGenerator = function(racunInstance, templatesFolder, destinationPath) {
 	var functions;
 	var globals;
 	
+	swig.setDefaults({ locals: { rootPath: destinationPath } });
+	
 	// thanks for being so magical *3*
 	ncp(templatesFolder + '/css', destinationPath + '/css');
 	ncp(templatesFolder + '/fonts', destinationPath + '/fonts');
