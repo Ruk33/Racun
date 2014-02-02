@@ -93,7 +93,7 @@ function main(args) {
 			}
 		}
 		
-		//jsonGenerator(racunInstance, destinationPath);
+		jsonGenerator(racunInstance, destinationPath);
 	}
 }
 
