@@ -1,125 +1,109 @@
-var racun = require('../../src/racun');
 var args = process.argv;
 
 args.push('--paths')
 args.push(__dirname + '/../example');
 
-racun.init(args);
+var racun = require('../../racun');
 
-module.exports = {			
+module.exports = {	
 	packageAI: function(test) {
-		var package = racun.getPackage('AI');
-		
-		test.notEqual(package, null, 'Package AI is not detected');
-		
+		test.equal(racun.getPackage('AI').name, 'AI', 'Package AI is not detected');
 		test.done();
 	},
 	
 	classAI: function(test) {
-		var classes = racun.getClassesFromPackage('AI');
-		var classAI = classes['AI'];
+		test.equal(racun.getClassFromPackage('AI', 'AI').name, 'AI', 'Class AI is not detected');
+		test.done();
+	},
+	
+	classAIMethods: function(test) {		
+		var onTargetChanges = racun.getMethodFromClass('AI', 'AI', 'onTargetChanges');
+		test.equal(onTargetChanges['description'], 'Funcion que se ejecuta cuando el objeto cambia');
+		test.equal(onTargetChanges['visibility'], 'public');
+		test.equal(onTargetChanges['static'], false);
+		test.equal(onTargetChanges['abstract'], true);
 		
-		test.notEqual(classAI, null, 'Class AI is not detected');		
-		test.equal(classAI['name'], 'AI', 'Class name is not correct');
+		var getBoss = racun.getMethodFromClass('AI', 'AI', 'getBoss');
+		test.equal(getBoss['description'], 'Obter unidad que hace de boss');
+		test.equal(getBoss['visibility'], 'public');
+		test.equal(getBoss['static'], false);
+		test.equal(getBoss['abstract'], false);
+		
+		var setTarget = racun.getMethodFromClass('AI', 'AI', 'setTarget');
+		test.equal(setTarget['description'], 'Asignamos el objetivo del boss');
+		test.equal(setTarget['visibility'], 'public');
+		test.equal(setTarget['static'], false);
+		test.equal(setTarget['abstract'], false);
+
+		var getTarget = racun.getMethodFromClass('AI', 'AI', 'getTarget');
+		test.equal(getTarget['description'], 'Obtener objetivo del boss');
+		test.equal(getTarget['visibility'], 'public');
+		test.equal(getTarget['static'], false);
+		test.equal(getTarget['abstract'], false);
+		
+		var attackTarget = racun.getMethodFromClass('AI', 'AI', 'attackTarget');
+		test.equal(attackTarget['description'], 'Atacar objetivo');
+		test.equal(attackTarget['visibility'], 'public');
+		test.equal(attackTarget['static'], false);
+		test.equal(attackTarget['abstract'], false);
+		
+		
+		var setTargetToWeaker = racun.getMethodFromClass('AI', 'AI', 'setTargetToWeaker');
+		test.equal(setTargetToWeaker['description'], 'Asignamos el objetivo del boss a la unidad mas debil que encuentre');
+		test.equal(setTargetToWeaker['visibility'], 'public');
+		test.equal(setTargetToWeaker['static'], false);
+		test.equal(setTargetToWeaker['abstract'], false);
+		
+		var countEnemiesArround = racun.getMethodFromClass('AI', 'AI', 'countEnemiesArround');
+		test.equal(countEnemiesArround['description'], 'Contar enemigos cercanos a un punto');
+		test.equal(countEnemiesArround['visibility'], 'public');
+		test.equal(countEnemiesArround['static'], false);
+		test.equal(countEnemiesArround['abstract'], false);
+		
+		var getLocationFromIndex = racun.getMethodFromClass('AI', 'AI', 'getLocationFromIndex');
+		test.equal(getLocationFromIndex['description'], 'Obtenemos location mediante indice del linked list waypoints');
+		test.equal(getLocationFromIndex['visibility'], 'public');
+		test.equal(getLocationFromIndex['static'], false);
+		test.equal(getLocationFromIndex['abstract'], false);
+		
+		var getConvenientLocation = racun.getMethodFromClass('AI', 'AI', 'getConvenientLocation');
+		test.equal(getConvenientLocation['description'], 'Obtenemos waypoint conveniente (donde no hay enemigos).');
+		test.equal(getConvenientLocation['tags']['@return'], 'int');
+		test.equal(getConvenientLocation['visibility'], 'public');
+		test.equal(getConvenientLocation['static'], false);
+		test.equal(getConvenientLocation['abstract'], false);
+		
+		var getFarWaypointIndex = racun.getMethodFromClass('AI', 'AI', 'getFarWaypointIndex');
+		test.equal(getFarWaypointIndex['description'], 'Obtenemos el indice del waypoint que este mas alejado de una locacion');
+		test.equal(getFarWaypointIndex['visibility'], 'public');
+		test.equal(getFarWaypointIndex['static'], false);
+		test.equal(getFarWaypointIndex['abstract'], false);
+		
+		var createWaypoints = racun.getMethodFromClass('AI', 'AI', 'createWaypoints');
+		test.equal(createWaypoints['description'], 'Crear waypoints');
+		test.equal(createWaypoints['visibility'], 'public');
+		test.equal(createWaypoints['static'], false);
+		test.equal(createWaypoints['abstract'], false);
 		
 		test.done();
 	},
-			
-	classAIMethods: function(test) {
-		var classes = racun.getClassesFromPackage('AI');
-		var classAI = classes['AI'];
-		var methods = classAI['methods'];
-
-		test.notEqual(methods['onTargetChanges'], null);
-		test.equal(methods['onTargetChanges']['description'], 'Funcion que se ejecuta cuando el objeto cambia');
-		test.equal(methods['onTargetChanges']['visibility'], 'public');
-		test.equal(methods['onTargetChanges']['static'], false);
-		test.equal(methods['onTargetChanges']['abstract'], true);
+	
+	classAIProperties: function(test) {		
+		var boss = racun.getPropertyFromClass('AI', 'AI', 'boss');
+		test.equal(boss['description'], 'Unidad que hace de boss');
+		test.equal(boss['visibility'], 'protected');
+		test.equal(boss['static'], false);
+		test.equal(boss['constant'], false);
+		test.equal(boss['array'], false);
+		test.equal(boss['default'], 'null');
 		
-		test.notEqual(methods['getBoss'], null);
-		test.equal(methods['getBoss']['description'], 'Obter unidad que hace de boss');
-		test.equal(methods['getBoss']['visibility'], 'public');
-		test.equal(methods['getBoss']['static'], false);
-		test.equal(methods['getBoss']['abstract'], false);
-		
-		test.notEqual(methods['setTarget'], null);
-		test.equal(methods['setTarget']['description'], 'Asignamos el objetivo del boss');
-		test.equal(methods['setTarget']['visibility'], 'public');
-		test.equal(methods['setTarget']['static'], false);
-		test.equal(methods['setTarget']['abstract'], false);
-
-		test.notEqual(methods['getTarget'], null);
-		test.equal(methods['getTarget']['description'], 'Obtener objetivo del boss');
-		test.equal(methods['getTarget']['visibility'], 'public');
-		test.equal(methods['getTarget']['static'], false);
-		test.equal(methods['getTarget']['abstract'], false);
-		
-		test.notEqual(methods['attackTarget'], null);
-		test.equal(methods['attackTarget']['description'], 'Atacar objetivo');
-		test.equal(methods['attackTarget']['visibility'], 'public');
-		test.equal(methods['attackTarget']['static'], false);
-		test.equal(methods['attackTarget']['abstract'], false);
-		
-		test.notEqual(methods['setTargetToWeaker'], null);
-		test.equal(methods['setTargetToWeaker']['description'], 'Asignamos el objetivo del boss a la unidad mas debil que encuentre');
-		test.equal(methods['setTargetToWeaker']['visibility'], 'public');
-		test.equal(methods['setTargetToWeaker']['static'], false);
-		test.equal(methods['setTargetToWeaker']['abstract'], false);
-		
-		test.notEqual(methods['countEnemiesArround'], null);
-		test.equal(methods['countEnemiesArround']['description'], 'Contar enemigos cercanos a un punto');
-		test.equal(methods['countEnemiesArround']['visibility'], 'public');
-		test.equal(methods['countEnemiesArround']['static'], false);
-		test.equal(methods['countEnemiesArround']['abstract'], false);
-		
-		test.notEqual(methods['getLocationFromIndex'], null);
-		test.equal(methods['getLocationFromIndex']['description'], 'Obtenemos location mediante indice del linked list waypoints');
-		test.equal(methods['getLocationFromIndex']['visibility'], 'public');
-		test.equal(methods['getLocationFromIndex']['static'], false);
-		test.equal(methods['getLocationFromIndex']['abstract'], false);
-		
-		test.notEqual(methods['getConvenientLocation'], null);
-		test.equal(methods['getConvenientLocation']['description'], 'Obtenemos waypoint conveniente (donde no hay enemigos).');
-		test.equal(methods['getConvenientLocation']['tags']['@return'], 'int');
-		test.equal(methods['getConvenientLocation']['visibility'], 'public');
-		test.equal(methods['getConvenientLocation']['static'], false);
-		test.equal(methods['getConvenientLocation']['abstract'], false);
-		
-		test.notEqual(methods['getFarWaypointIndex'], null);
-		test.equal(methods['getFarWaypointIndex']['description'], 'Obtenemos el indice del waypoint que este mas alejado de una locacion');
-		test.equal(methods['getFarWaypointIndex']['visibility'], 'public');
-		test.equal(methods['getFarWaypointIndex']['static'], false);
-		test.equal(methods['getFarWaypointIndex']['abstract'], false);
-		
-		test.notEqual(methods['createWaypoints'], null);
-		test.equal(methods['createWaypoints']['description'], 'Crear waypoints');
-		test.equal(methods['createWaypoints']['visibility'], 'public');
-		test.equal(methods['createWaypoints']['static'], false);
-		test.equal(methods['createWaypoints']['abstract'], false);
-		
-		test.done();
-	},
-			
-	classAIProperties: function(test) {
-		var classes = racun.getClassesFromPackage('AI');
-		var classAI = classes['AI'];
-		var properties = classAI['properties'];
-
-		test.notEqual(properties['boss'], null);
-		test.equal(properties['boss']['description'], 'Unidad que hace de boss');
-		test.equal(properties['boss']['visibility'], 'protected');
-		test.equal(properties['boss']['static'], false);
-		test.equal(properties['boss']['constant'], false);
-		test.equal(properties['boss']['array'], false);
-		test.equal(properties['boss']['default'], 'null');
-		
-		test.notEqual(properties['target'], null);
-		test.equal(properties['target']['description'], 'Objetivo del boss');
-		test.equal(properties['target']['visibility'], 'protected');
-		test.equal(properties['target']['static'], false);
-		test.equal(properties['target']['constant'], false);
-		test.equal(properties['target']['array'], false);
-		test.equal(properties['target']['default'], '');
+		var target = racun.getPropertyFromClass('AI', 'AI', 'target');
+		test.equal(target['description'], 'Objetivo del boss');
+		test.equal(target['visibility'], 'protected');
+		test.equal(target['static'], false);
+		test.equal(target['constant'], false);
+		test.equal(target['array'], false);
+		test.equal(target['default'], '');
 		
 		test.done();
 	}

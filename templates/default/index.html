@@ -2,14 +2,10 @@
 
 {% block content %}
 
-{{ docs.AI.classes.AI.name }}
-
-cantidad de clases: {{ docs.AI.classes.length }}
-cantidad de metodos en la clase AI: {{ docs.AI.classes.AI.methods.length }}
-cantidad de propiedades en la clase AI: {{ docs.AI.classes.AI.properties.length }}
-
-{% for c in docs.AI.classes %}
-	{{ c.name }}
+<ul>
+{% for package in docs.getPackages() %}
+	<li>{{ package.name }}</li>
 {% endfor %}
+</ul>
 
 {% endblock %}
